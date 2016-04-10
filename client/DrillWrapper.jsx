@@ -4,35 +4,34 @@ import TrackerReact from "meteor/ultimatejs:tracker-react";
 import ReactCSSTransitionGroup from "react-addons-css-transition-group";
 
 if(Meteor.isClient) {
-    Resolutions = new Mongo.Collection("resolutions");
+    Wordlist = new Mongo.Collection("wordlist");
 }
-
 
 export default class DrillWrapper extends TrackerReact(React.Component) {
     constructor() {
         super();
         this.state = {
             subscription: {
-                resolutions: Meteor.subscribe("userResolutions")
+                wordlist: Meteor.subscribe("wordlist")
             }
         }
     }
 
     componentWillUnmount() {
-        this.state.subscription.resolutions.stop();
+        this.state.subscription.wordlist.stop();
     }
 
-    resolutions() {
-        return Resolutions.find().fetch();
+    wordlist() {
+        return Wordlist.find().fetch();
     }
 
     render () {
-        DocHead.setTitle("My Resolutions for This This Month");
-        let res = this.resolutions();
-        if (res.length < 1) {
+        DocHead.setTitle("My Vocabulary");
+        let words = this.wordlist();
+        if (words.length < 1) {
             return (
                 <div>
-                    <div>No Resolutions</div>
+                    <div>No Words</div>
                 </div>
             );
         }
@@ -47,9 +46,6 @@ export default class DrillWrapper extends TrackerReact(React.Component) {
                         transitionEnterTimeout={600}
                         transitionLeaveTimeout={400}
                     >
-                        {this.resolutions().map( (resolution)=> {
-                            return  <ResolutionSingle key={resolution._id} resolution={resolution} />
-                        })}
                     </ReactCSSTransitionGroup>
                 </ul>
             </div>
