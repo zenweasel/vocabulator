@@ -22,6 +22,8 @@ audit-argument-checks
 accounts-ui
 accounts-password
 
+aldeed:collection2
+
 kadira:flow-router-ssr
 meteortoys:allthings
 ultimatejs:tracker-react

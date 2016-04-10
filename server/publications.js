@@ -1,5 +1,2 @@
-Wordlist = new Mongo.Collection("Wordlist");
+import Wordlist from "./schemas";
 
-Meteor.publish("wordlist", function() {
-    return Wordlist.find();
-});
