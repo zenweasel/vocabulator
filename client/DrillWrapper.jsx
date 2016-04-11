@@ -2,8 +2,8 @@ import React from "react";
 import TrackerReact from "meteor/ultimatejs:tracker-react";
 
 
-if(Meteor.isClient) {
-    Wordlist = new Mongo.Collection("wordlist");
+if (Meteor.isClient) {
+  Wordlist = new Mongo.Collection("wordlist");
 }
 
 export default class DrillWrapper extends TrackerReact(React.Component) {
@@ -16,21 +16,22 @@ export default class DrillWrapper extends TrackerReact(React.Component) {
         }
     }
 
+
     componentWillUnmount() {
         this.state.subscription.wordlist.stop();
     }
 
-    componentWillMount() {
-        console.log("mounted");
+    componentDidMount() {
         let wordList = this.wordlist();
-        this.props.randomWord = this.pickRandomWord(wordList);
+        let randomWord = this.pickRandomWord(wordList);
+        this.setState({randomWord: randomWord});
     }
 
     pickRandomWord(wordlist) {
         const max = wordlist.length - 1;
         const min = 0;
         const randomNum = Math.floor(Math.random() * (max - min + 1)) + min;
-        this.props.randomWord = wordlist[randomNum];
+        return wordlist[randomNum];
     }
 
     wordlist() {
@@ -38,14 +39,15 @@ export default class DrillWrapper extends TrackerReact(React.Component) {
     }
 
     newWord() {
+        console.log("picking new word");
         let wordList = this.wordlist();
-        this.props.randomWord = this.pickRandomWord(wordList);
+        let randomWord = this.pickRandomWord(wordList);
+        this.setState({randomWord: randomWord});
     }
 
-    render () {
+    render() {
         DocHead.setTitle("My Vocabulary");
         let words = this.wordlist();
-        console.log(this.props);
         if (words.length < 1) {
             return (
                 <div>
@@ -53,18 +55,31 @@ export default class DrillWrapper extends TrackerReact(React.Component) {
                 </div>
             );
         }
-        this.pickRandomWord(words);
+
+        if (this.state.randomWord) {
+            return (
+                <div>
+                    <h1>Your Word</h1>
+                    <ul className="resolutions">
+                        {this.state.randomWord.english} : {this.state.randomWord.tagalog} &nbsp;
+                        <button onClick={this.newWord.bind(this)}>
+                            New Word
+                        </button>
+                    </ul>
+                </div>
+            )
+        }
+
         return (
             <div>
-                <h1>Your Word</h1>
-                <ul className="resolutions">
-                    {this.props.randomWord.english} : {this.props.randomWord.tagalog}
+                <div>No Word Yet
                     <button onClick={this.newWord.bind(this)}>
                         New Word
                     </button>
-                </ul>
+                </div>
             </div>
-        )
+        );
+
     }
 }
 
