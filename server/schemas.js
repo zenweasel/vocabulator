@@ -1,15 +1,5 @@
-Wordlist = new Mongo.Collection("wordlist");
-
-Wordlist.allow({
-    insert: function (userId, doc) {
-        return !!userId;
-    },
-    update: function (userId, doc) {
-        return !!userId;
-    }
-});
-
-
+import { SimpleSchema } from 'meteor/aldeed:simple-schema';
+import { Wordlist } from "./collections";
 
 WordlistSchema = new SimpleSchema({
     english: {
@@ -36,9 +26,3 @@ Meteor.methods({
 });
 
 Wordlist.attachSchema( WordlistSchema );
-
-Meteor.publish("wordlist", function() {
-    return Wordlist.find();
-});
-
-

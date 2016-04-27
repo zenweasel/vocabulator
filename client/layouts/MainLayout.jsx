@@ -1,16 +1,13 @@
 import React from "react";
-// import AccountsUI from "../AccountsUI.jsx";
+import NavBar from "../components/generic/navbar";
 
 export const MainLayout = ({content}) => (
-    <div className="main-layout">
-        <header><h2>Vocabulator</h2>
-            <nav>
-                <a href="/">Drills</a>
-                <a href="/about">Admin</a>
-            </nav>
-        </header>
-        <main>
-            {content}
-        </main>
-    </div>
+  <div className="main-layout">
+    <header>
+      <NavBar id="app-header" brandLink="http://brenthoover.com" brand="Vocabulator" />
+    </header>
+    <main>
+      {content}
+    </main>
+  </div>
 );
